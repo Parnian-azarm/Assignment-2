@@ -1,12 +1,23 @@
 /* This file is where all your work should go for Assignment 2.  Please remove this comment. */
-function cleanUpIndex() {
-    const elementNodes = document.querySelectorAll('title, h1, h2, .contact');
-    for(let i = 0; i < elementNodes.length; i++) {
-        elementNodes[i].remove();
-    }
+document.querySelector('.nav-home').addEventListener('click', function() {
+    Array.from(document.querySelectorAll('.main > *')).map(elt => elt.remove());
+});
+
+
+function createSingleIndex(contact) {
+    let a = document.createElement('a');
+    a.setAttribute('href', 'page3.html');
+    let div = document.createElement('div');
+    div.className = "contact";
+    let p = document.createElement('p');
+    p.textContent = contact.name;
+    div.append(p);
+    a.append(div);
+  
+    return a;
 }
 
-let contactList = [
+let contacts = [
     {
         name: "Roberta Dobbs",
         phone: "778-555-1234",
@@ -20,54 +31,97 @@ let contactList = [
         email: "whatsup@doc.example.com",
     },
 ];
-function createSingleIndex(contactList) {
-    const singlenodeelement = document.createElement('div');
-    singlenodeelement.className= "contact";
-    const contactlink = document.createElement('a');
-    const contact = document.createElement('p');
-    contact.textContent = "Barry Allen";
-    const contacts = document.createTextNode(contactList);
-    singlenodeelement.appendChild(contactlink);
-    contactlink.appendChild(contact);
-    contact.appendChild(contacts);
-    contactlink.setAttribute("href", "page3.html")
-    console.log(singlenodeelement)
-}
 
-function renderIndex(contactList) {
+function renderIndex(contacts) {
 
-    let index = document.querySelector(".main");
-    for (let i = 0; i < contactList.length; i++) {
-        let page = createSingleIndex(contactList[i]);
-        index.appendChild(page);
-    }
-    
-}
-
-
-function cleanUpView() {
-    const viewNodes = document.querySelectorAll('h1, h2, div');
-    for(let i = 0; i < viewNodes.length; i++) {
-        viewNodes[i].remove();
+    let main = document.querySelector('.main');
+    for (let contact of contacts) {
+      main.append(createSingleIndex(contact));
     }
 }
 
-function renderView(contactList) {
-    let doc = document.querySelector(".main");
-    view = createSingleIndex(contactList[0]);
-        doc.appendChild(view);
+
+document.querySelector('header').addEventListener('click', function() {
+    Array.from(document.querySelectorAll('.main > *')).map(elt => elt.remove());
+});
+
+const form = document.querySelector('form');
+const closeButton = document.querySelector('.button cancel');
+closeButton.addEventListener('click', () => {
+    form.close();
+});
+
+
+function renderCreate(contacts) {
+    let main = document.querySelector('.main');
+    let template = `
+      <div class="contactedit">
+        <div class="contactimg">
+            <img src="./img/profile.jpg" class ="profilepic" alt="Profile picture">
+        </div>
+        <div class="form">
+            <form>
+                <div class="inputcontainer">
+                    <input type="text" id="contactname" name="contactname" placeholder="Contact Name">
+                    <button class="extrafield" id="extranamefield" name="extranamefield">+</button>
+                </div>
+  
+                <div class="inputcontainer">
+                    <input type="tel" id="contactphone" name="contactphone" placeholder="Contact Phone">
+                    <button class="extrafield" id="extraphonefield" name="extraphonefield">+</button>
+                </div>
+  
+                <div class="inputcontainer">
+                    <input type="text" id="contactaddress" name="contactaddress" placeholder="Contact Address">
+                    <button class="extrafield" id="extraaddressfield" name="extraaddressfield">+</button>
+                </div>
+                
+                <div class="inputcontainer">
+                    <input type="email" id="contactemail" name="contactemail" placeholder="Contact Email">
+                    <button class="extrafield" id="extraemailfield" name="extraemailfield">+</button>
+                </div>
+  
+                <div class="buttons">
+                    <button type="submit" class="button save" id="savecontact" name="savecontact">Save Contact</button>
+                    <button type="reset" class="button cancel" id="cancel" name="cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    `
+    main.innerHTML = template;
 }
 
 
-function cleanUpCreate() {
-    const page2Nodes = document.querySelectorAll('h1, h2, .inputcontainer, .buttons, img');
-    for(let i = 0; i < page2Nodes.length; i++) {
-        page2Nodes[i].remove();
-    }
-}
+function renderView(contacts) {
+    let main = document.querySelector('.main');
+    let template = `
+      <div class="contactinfo">
+        <div class="contactname">
+            <img src="./img/profile.jpg" class="profilepic" alt="Profile picture">
+        </div>
+        <div class="contactemail">email: x@x.com</div>
+        <div class="contactphone">cell: +1 xxx xxx-xxxx</div>
+        <div class="contactaddress">address: 123 front st, Unit #1, Dakota City</div>
+        <div class="buttons">
+            <button class="button edit" value="Edit">Edit</button>
+            <button class="button close" value="Close">Close</button>
+        </div>
+      </div>
+    `;
+    main.innerHTML = template;
+    document.querySelector('.main .contactname').prepend(document.createTextNode(contacts.name));
+    document.querySelector('.main .contactemail').textContent = "email: " + contacts.email;
+    document.querySelector('.main .contactphone').textContent = "phone: " + contacts.phone;
+    document.querySelector('.main .contactaddress').textContent = "address: " + contacts.address;
+  
 
-function renderCreate(contactList) {
-    let pagec = document.querySelector(".main");
-    create = createSingleIndex(contactList);
-        pagec.appendChild(create);
-}
+};
+
+const form = document.querySelector('.main');
+const closeButton = document.querySelector('.button close');
+closeButton.addEventListener('click', () => {
+    form.close();
+});
+
+
